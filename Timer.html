@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Style Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color:black;
+            margin: 0;
+        }
+
+        .timer-container {
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .ring {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 10px solid red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #time-display {
+            font-size: 2em;
+            color: white;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <h1 id="timer-label">START</h1>
+        <div class="ring" id="ring">
+            <div id="time-display">03:00</div>
+        </div>
+    </div>
+
+    <script>
+        const timerLabel = document.getElementById('timer-label');
+        const timeDisplay = document.getElementById('time-display');
+        const ring = document.getElementById('ring');
+
+        let isFourMinuteInterval = true;
+        let time = 180; // 4 minutes in seconds
+
+        function startTimer() {
+            const interval = setInterval(() => {
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                timeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (time === 0) {
+                    if (isFourMinuteInterval) {
+                        isFourMinuteInterval = false;
+                        time = 60; // 1 minute in seconds
+                        timerLabel.textContent = 'REST';
+                        ring.style.borderColor = 'white';
+                        speakMessage('REST');
+                    } else {
+                        isFourMinuteInterval = true;
+                        time = 180; // 4 minutes in seconds
+                        timerLabel.textContent = 'START';
+                        ring.style.borderColor = 'red';
+                        speakMessage('LETS FUCKING GO');
+                    }
+                } else {
+                    time--;
+                }
+            }, 1000);
+        }
+        
+
+        function speakMessage(message) {
+            console.log(`"shi working" ${message}`);
+            const speech = new SpeechSynthesisUtterance(message);
+            window.speechSynthesis.speak(speech);
+        }
+
+        // Start the first timer
+        startTimer();
+        speakMessage('LETS FUCKING GO');
+        
+        
+    </script>
+</body>
+</html>
