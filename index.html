@@ -38,7 +38,11 @@
             font-size: 2em;
             color: white;
         }
-        
+
+        #round-counter {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
     </style>
 </head>
 <body>
@@ -47,15 +51,18 @@
         <div class="ring" id="ring">
             <div id="time-display">03:00</div>
         </div>
+        <div id="round-counter">Round: 1</div> <!-- Round Counter -->
     </div>
 
-    <script>
+    <script type="module">
         const timerLabel = document.getElementById('timer-label');
         const timeDisplay = document.getElementById('time-display');
         const ring = document.getElementById('ring');
+        const roundCounter = document.getElementById('round-counter');
 
         let isFourMinuteInterval = true;
         let time = 180; // 4 minutes in seconds
+        let round = 1; // Initialize the round counter
 
         function startTimer() {
             const interval = setInterval(() => {
@@ -76,25 +83,24 @@
                         timerLabel.textContent = 'START';
                         ring.style.borderColor = 'red';
                         speakMessage('LETS FUCKING GO');
+                        round++; // Increment the round counter
+                        roundCounter.textContent = `Round: ${round}`; // Update the round display
                     }
                 } else {
                     time--;
                 }
             }, 1000);
         }
-        
 
         function speakMessage(message) {
-            console.log(`"shi working" ${message}`);
             const speech = new SpeechSynthesisUtterance(message);
+            window.speechSynthesis.cancel();
             window.speechSynthesis.speak(speech);
         }
 
         // Start the first timer
         startTimer();
         speakMessage('LETS FUCKING GO');
-        
-        
     </script>
 </body>
 </html>
